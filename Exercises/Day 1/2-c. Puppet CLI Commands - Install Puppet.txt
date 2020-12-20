@@ -7,3 +7,14 @@ echo "127.0.0.2 puppet" >> /etc/hosts
 yum install puppetserver
 exit
 sudo -i puppet --version
+
+sed -i 's/2g/1g/g' /etc/sysconfig/puppetserver
+systemctl enable --now puppetserver puppet
+ss -ntl
+puppet agent -t
+
+# Optional Install Apache
+# puppet module install puppetlabs/apache
+# puppet apply -e "include apache"
+# ss -ntl
+# curl localhost
