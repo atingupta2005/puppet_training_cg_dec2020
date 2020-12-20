@@ -19,11 +19,15 @@ sudo rpm -Uvh puppetlabs-release-pc1-el-7.noarch.rpm
 sudo yum -y install puppetserver
 
 5. (Optional) Do change in system config puppet server file
-vim /etc/systemconfig/puppetserver
+cat /etc/sysconfig/puppetserver
+sed -i 's/2g/1g/g' /etc/sysconfig/puppetserver
 
 6. Start Puppet Server Service
-sudo systemctl start puppetserver
+sudo systemctl restart puppetserver
 sudo systemctl enable puppetserver
+#sudo systemctl enable --now puppetserver puppet
+ss -ntl
+puppet agent -t
 
 # Setup Puppet Client - CentOs 7
 1. Do changes in hosts file and add a line as below
