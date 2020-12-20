@@ -1,0 +1,9 @@
+## Add and List Repo
+ - We can easily add and list the Puppetlabs repo on CentOS 8
+
+sudo su
+yum install https://yum.puppet.com/puppet-release-el-8.noarch.rpm
+echo "127.0.0.2 puppet" >> /etc/hosts
+yum install puppetserver
+exit
+sudo -i puppet --version

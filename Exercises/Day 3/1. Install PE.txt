@@ -1,0 +1,46 @@
+1. Download Puppet Enterprise binary for your platform
+curl -JLO 'https://pm.puppet.com/cgi-bin/download.cgi?dist=el&rel=8&arch=x86_64&ver=latest'
+
+tar -xf puppet-enterprise-2019.8.4-el-8-x86_64.tar.gz
+
+cd puppet-enterprise-2019.8.4-el-8-x86_64
+./puppet-enterprise-installer
+
+
+1. Puppet Enterprise Agents
+curl -JLO 'https://pm.puppet.com/puppet-agent/2019.8.4/6.19.1/repos/el/8/puppet6/x86_64/puppet-agent-6.19.1-1.el8.x86_64.rpm'
+
+Switch to root user
+sudo su
+
+1. When prompted, specify a console administrator password: 
+puppet infrastructure console_password --password=Azure@123456
+
+1. Run Puppet twice:
+puppet agent -t
+
+1. Log into the PE console
+	- Open http://<Public_IP> and note the redirected domain name
+	- Make an entry in c:\windows\system32\drivers\etc\hosts
+		<public_ip> vmpuppetel.hrtp3bcmczvedhkrpaylxrzdzg.ax.internal.cloudapp.net
+	- Login using admin/Azure@123456
+	- Make an entry in hosts file for the hostname of puppet server
+		sudo vim /etc/hosts
+			137.117.136.105 vmpuppetel.hrtp3bcmczvedhkrpaylxrzdzg.ax.internal.cloudapp.net
+
+1. Check the status of your primary server
+You can run a task to check the status of your primary server in the console.
+ - In the console, in the Orchestration section, click Tasks.
+ - Click Run a task in the upper right corner of the Tasks page.
+ - In the Task field, select service because you are checking the status of the primary server service.
+ - Under Task parameters, parameters and values for the task. The service task has two required parameters. For action, choose status. For name, enter puppet.
+ - Under Select targets, select Node list
+	- In the Inventory nodes field, add the hostname of your primary server and select it.
+	
+1. Click Run task or Schedule job.
+	- Your task run appears on the Tasks page. To rerun the task, click Run again and choose to rerun the task on all nodes or only on the nodes that failed during the initial run.
+
+1. Results
+View the task status and output in the Jobs page when it is finished running.
+The status of your primary server should be “running” and “enabled”
+

@@ -1,0 +1,55 @@
+# Adhoc Commands
+## Bootstrap client: Tasks that bootstrap or install Puppet on the agent node
+puppet agent -t --server <puppet master>
+
+## Displaying facts:
+facter              # All system facts
+facter -p           # All system and Puppet facts
+facter -y           # YAML
+facter -j           # JSON
+facter <name>  # A specific fact
+
+## Managing certificates:
+puppetserver ca list
+puppetserver ca list --all
+puppetserver ca sign <name>
+puppetserver ca clean <name> #Removes cert
+
+## Managing nodes:
+puppet node clean <name> #Removes node + cert
+
+## Managing modules:
+puppet module list
+puppet module install <name>
+puppet module uninstall <name>
+puppet module upgrade <name>
+puppet module search <name>
+
+## Inspecting resources and types:
+puppet describe -l
+puppet resource <type name>
+puppet resource service
+
+## To check the version
+puppet --version
+
+## To remove packages
+	package { 'apache2.0-common':
+		ensure => absent,
+	}
+
+## To update packages
+	package { 'puppet':
+		ensure => latest,
+	}
+
+## To start service at the boot time
+service { 'nginx':
+		ensure => running,
+		enable => true, #false disables auto-startup
+	}
+
+## To set to a specific version
+	package { 'nginx':
+		ensure => '1.1.18-1ubuntu0.1',
+	}

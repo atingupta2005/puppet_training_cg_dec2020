@@ -1,0 +1,101 @@
+# Using Templates
+ - We can use templates to customize configuration files
+ - We can use a template to make sure a local time zone is used to the agents timezone.
+ 
+## Templating Languages
+ - With Puppet 6 we have the choice of two languages that we can use for templates.
+	• Embedded Puppet (EPP) has been available since Puppet 4 and use Puppet expressions enclosed in tags
+	• Embedded Ruby (ERB) which is available in all Puppet version but used embedded Ruby expressions
+
+## Simple Template
+ - A simple template like this may work for the /etc/motd file. We can test the result with puppet epp render
+vim test.epp
+
+You have connected to the Server:
+<%= $facts['ipaddress'] %> <%= $facts['fqdn'] %>
+
+puppet epp render test.epp
+
+## Complex Configurations
+ - Templates can allow for easier management of complex configuration where customization is required Using the chrony module we created we can adjust the time server used based on the timezone of the agent
+
+## Static File
+ - With this file all agents will be directed to one on the pool servers in the UK pool
+ - If we have servers in other time zones we may want to set another pool
+
+cat /etc/puppetlabs/code/environments/production/modules/chrony/files/chrony.conf
+server uk.pool.ntp.org iburst
+driftfile /var/lib/chrony/drift
+makestep 1.0 3
+rtcsync
+keyfile /etc/chrony.keys
+leapsectz right/UTC
+logdir /var/log/chron
+
+## EPP Template
+cd
+vim motd.epp
+This is the system
+<%= $facts['ipaddress'] %> <%= facts['fqdn'] %>
+
+puppet epp render motd.epp
+
+### We can embed Puppet logic to the file to read the $timezone fact
+cdpp
+cd ../modules/chrony
+
+mkdir /etc/puppetlabs/code/environments/production/modules/chrony/templates
+
+mv /etc/puppetlabs/code/environments/production/modules/chrony/files/chrony.conf \
+/etc/puppetlabs/code/environments/production/modules/chrony/templates/chrony.epp
+
+vim /etc/puppetlabs/code/environments/production/modules/chrony/templates/chrony.epp
+<% if $timezone == 'BST'{ -%>
+	server uk.pool.ntp.org iburst
+<% } elsif $timezone == 'GMT' { -%>
+	server uk.pool.ntp.org iburst
+<% } else { -%>
+	server us.pool.ntp.org iburst
+<% } -%>
+driftfile /var/lib/chrony/drift
+makestep 1.0 3
+rtcsync
+keyfile /etc/chrony.keys
+leapsectz right/UTC
+logdir /var/log/chron
+
+puppet epp render chrony.epp
+
+timectl set-timezone America/Denver
+
+puppet epp render chrony.epp
+
+timectl set-timezone Europe/London
+
+puppet epp render chrony.epp
+
+cd ../manifests
+pwd
+vim init.pp
+
+#Change from file to template
+class chrony {
+	package { 'chrony':
+	ensure => 'installed',
+}
+service { 'chronyd':
+	ensure => 'running',
+	enable => true,
+	require => Package['chrony'],
+}
+file { '/etc/chrony.conf':
+	ensure => file,
+	content => epp('chrony/chrony.epp'),
+	notify => Service['chronyd'],
+}
+}
+
+cat /etc/chrony.conf
+puppet agent -t
+cat /etc/chrony.conf
+

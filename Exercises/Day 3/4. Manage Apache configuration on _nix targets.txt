@@ -1,0 +1,53 @@
+# Add a module
+Visit - https://github.com/atingupta2005/puppet_control_repo/edit/production/Puppetfile
+
+Add below in Puppetfile:
+
+mod 'puppetlabs/apache', '5.4.0'
+mod 'puppetlabs/stdlib', '4.13.1'
+mod 'puppetlabs/concat',  '2.2.1'
+
+- SSH into your primary server and deploy code by running the
+	puppet-code deploy --dry-run
+	puppet-code deploy --all --wait
+
+# You can view the progress of the deployment on the Puppet Master with this command:
+tail -f /var/log/puppetlabs/puppetserver/puppetserver.log
+
+# Check the modules installed or not
+puppet module list --modulepath /etc/puppetlabs/code/environments/production/modules
+
+# Configure your desired state
+ - Tell PE how your infrastructure should be configured by grouping and classifying nodes based on their function
+## Create your classification group
+1. In the console, click Node groups, and click Add group.
+1. Specify options for the new node group:
+	Parent name: All Nodes
+	Group name: All Classification
+	Environment: production
+	Environment group: do not select
+1. Click Add
+
+## Create your apache node group
+1. In the console, click Node groups, and click Add group.
+1. Specify options for the new node group:
+	Parent name: All Classification
+	Group name: apache
+	Environment: production
+	Environment group: do not select
+1. Click Add
+
+## Add nodes to the apache node group
+1. In the console, click Node groups and select the apache node group you just created.
+1. On the Rules tab, under Certname, enter the certname of a node you want to add to the apache node group.
+1. Click Pin node.
+1. Repeat for additional nodes you want to add to the apache group.
+1. When you are done pinning nodes, commit changes.
+
+## Run Puppet on your Apache nodes
+1. In the console, on the Jobs page, click Run Puppet. 
+1. Under Run options, do not select anything.
+1. From the list of target types, select Node group.
+1. In the Chose a node group box, search for the apache node group and click Select.
+1. Click Run job.
+	- View the job status and a list of previous Puppet jobs on the Jobs page. To rerun the job, click Run again and choose to rerun the it on all nodes or only on the nodes that failed during the initial run.

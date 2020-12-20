@@ -1,0 +1,27 @@
+## TimeSync
+ - Ideally, we have accurate time on the server and agents. We can test Puppet from the command line to ensure Chronyd is installed and running
+puppet apply -e 'package { "chrony": ensure => installed }'
+puppet apply -e 'service { "chronyd": ensure => running , enable => true }'
+
+## Idempotent
+ - Puppet, being Idempotent, allows the command to run many times and only actions if we do not meet the configuration requirement
+puppet apply -e 'service { "chronyd": ensure => running , enable => true }'
+systemctl stop chronyd
+puppet apply -e 'service { "chronyd": ensure => running , enable => true }'
+
+
+## Java Memory and Firewall
+ - By default the Puppet Server is configured to use 2GB RAM in the JVM. For our systems we can reduce it to 1GB. Normally TCP port 8140 will need to be opened in the firewall
+vim /etc/sysconfig/puppetserver
+sed -i 's/2g/1g/g' /etc/sysconfig/puppetserver
+systemctl enable --now puppetserver puppet
+ss -ntl
+puppet agent -t
+
+## Overview of Puppet's Powers
+ - Even without writing code we can easily make use of the Power of Puppet by installing and using a module
+puppet module install puppetlabs/apache
+puppet apply -e "include apache"
+ss -ntl
+curl localhost
+
