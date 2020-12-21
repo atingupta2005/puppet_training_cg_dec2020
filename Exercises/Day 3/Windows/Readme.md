@@ -63,7 +63,8 @@ puppet apply 1.perms.pp
 	user { 'Administrator':
 	   ensure => present,
 	   password => 'yabbadabba'
-	}```
+	}
+	```
 	
  - puppet apply 6.create-user.pp
 
@@ -74,7 +75,8 @@ puppet apply 1.perms.pp
 	   ensure  => 'present',
 	   members => ['DOMAIN\\User'],
 	   auth_membership => false
-	}```
+	}
+	```
  - puppet apply 6.domain-user.pp
 
 ### Executing PowerShell code
@@ -136,7 +138,8 @@ puppet apply 1.perms.pp
 		windowsfeature { 'Web-WebServer':
 		  ensure                 => present,
 		  installmanagementtools => true,
-		}```
+		}
+		```
 
  - To install a feature and reboot if one is pending:
 		```
@@ -146,4 +149,5 @@ puppet apply 1.perms.pp
 		reboot {'after_RDS_RD_Server':
 		  when  => pending,
 		  subscribe => Windowsfeature['RDS-RD-Server'],
-		}```
+		}
+		```
