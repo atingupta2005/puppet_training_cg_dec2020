@@ -59,11 +59,11 @@ puppet apply 1.perms.pp
 
 ### Manage Windows users and groups
  - To manage administrator accounts with Puppet, create a user resource with 'Administrator' as the resource title
-	'''
+	
 	user { 'Administrator':
 	   ensure => present,
 	   password => 'yabbadabba'
-	}'''
+	}
  - puppet apply 6.create-user.pp
 
 ### Manage local groups
