@@ -228,7 +228,6 @@ rm 02.pp
 
 vim 01.pp
 include chrony
-include apache
 
 puppet agent -t
 
@@ -243,7 +242,6 @@ cdpp
 vim 01.pp
 if $osfamily == 'RedHat' {
 	include chrony
-	include apache
 }
 facter --show-legacy | grep osfamily
 
@@ -252,121 +250,9 @@ puppet agent -t
 vim 01.pp
 if $osfamily == 'Ubuntu' {
 	include chrony
-	include apache
 }
 
 puppet agent -t
-
-# Installing Modules in Different Location
-puppet
-puppet module list
-
-## Put in shared directory to be used in all environments
-### Remove module
-puppet uninstall puppetlabs/apache
-puppet module list
-
-## Install in a shared area
-puppet install puppetlabs/apache -i /etc/puppetlabs/code/modules
-
-#Search Module
-puppet module search apache
-
-#Search in Web Browser
-http://forge.puppet.com
-
-#Search Apache
-
-# Working with the stdlib Module and the file_line Resource
-cdpp
-pwd
-cd ../modules
-pwd
-cat stdlib/examples/file_line.pp
-
-cp stdlib/examples/file_line.pp ~
-
-cd ~
-
-cd -
-
-cd ~
-
-puppet apply file_line.pp
-
-cat /tmp/dansfile
-
-echo hello > /tmp/densfile
-
-puppet apply file_line.pp
-
-cat /tmp/dansfile
-
-echo hello >> /tmp/densfile
-
-cat /tmp/dansfile
-
-# No changes as line is already there
-puppet apply file_line.pp
-
-# Using file_line to Edit SSHD Configuration
-#Confirm the settings
-grep ^PermitRoot /etc/ssh/ssh_config
-
-#To print running configuration
-sshd -T
-sshd -T | grep permitroot
-
-#Create group of resources in our manifest
-puppet resource package openssh > ssh.pp
-
-#Make changes
-vim ssh.pp
-package { 'openssh':
-  ensure   => 'installed',
-}
-
-puppet resource service sshd >> ssh.pp
-vim ssh.pp
-package { 'openssh':
-  ensure   => 'installed',
-}
-service { 'sshd':
-  ensure   => 'running',
-  enable   => 'true',
-}
-
-#Enforce Ordering
-vim ssh.pp
-package { 'openssh':
-  ensure   => 'installed',
-}
-service { 'sshd':
-  ensure   => 'running',
-  enable   => 'true',
-  require  => Package('openssh'),
-}
-
-#Change Configuration
-vim ssh.pp
-package { 'openssh':
-  ensure   => 'installed',
-}
-service { 'sshd':
-  ensure   => 'running',
-  enable   => 'true',
-  require  => Package['openssh'],
-}
-file_line { 'sshd_root_login':
-	path 	=> '/etc/ssh/sshd_config',
-	ensure	=> 'present',
-	line	=> 'PermitRootLogin no',
-	match	=> '^PermitRootLogin ',
-	notify	=> Service['sshd'],
-}
-
-sshd -T | grep permitroot
-puppet apply ssh.pp
 
 
 # Creating Modules
@@ -390,16 +276,8 @@ ls
 #Create module
 mkdir -p chrony{manifests,files}
 
-#Remove all the comments
-grep -vE '^(#|$)' /etc/chrony.conf
-
-# -v: to inverse the search, -E: allows to group expressions together
-# - (#|$): Lines that begin either with wither a comment or the end of line ($)
-
-grep -vE '^(#|$)' /etc/chrony.conf > chrony/files/chrony.conf
-
 puppet resource package chrony > chrony/manifests/init.pp
-puppet resource service chronyd > chrony/manifests/init.pp
+puppet resource service chronyd >> chrony/manifests/init.pp
 
 vim chrony/manifests/init.pp
 class
@@ -431,7 +309,7 @@ cat /etc/chrony.conf
 puppet agent -t
 cat /etc/chrony.conf
 
-#Using Conditional Statements
+# Using Conditional Statements
 facter
 facter --puppet
 facter --puppet --show lagecy	# Different ways of displaying information
