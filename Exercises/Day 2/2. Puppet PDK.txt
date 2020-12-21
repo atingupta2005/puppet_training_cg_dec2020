@@ -1,4 +1,4 @@
-# PDK Dev
+# PDK Prod
 
 #Install
 gem install pdk
