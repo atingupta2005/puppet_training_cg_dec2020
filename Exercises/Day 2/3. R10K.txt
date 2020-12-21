@@ -1,7 +1,10 @@
-Puppet r10k
+# Puppet r10k
 
 #Install r10k
-/opt/puppetlabs/puppet/bin/gem install r10k
+sudo su
+yum install gem
+
+gem install r10k
 
 r10k help
 
