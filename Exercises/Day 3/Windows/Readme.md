@@ -134,20 +134,21 @@ puppet apply 1.perms.pp
 	- refer 11.windows-feature-several.pp
 	- puppet apply 11.windows-feature-several.pp
  - To install any associated management tools:
-		```
-		windowsfeature { 'Web-WebServer':
-		  ensure                 => present,
-		  installmanagementtools => true,
-		}
-		```
+```
+windowsfeature { 'Web-WebServer':
+  ensure                 => present,
+  installmanagementtools => true,
+}
+```
 
  - To install a feature and reboot if one is pending:
-		```
-		windowsfeature { 'RDS-RD-Server':
-		  ensure  => present,
-		}
-		reboot {'after_RDS_RD_Server':
-		  when  => pending,
-		  subscribe => Windowsfeature['RDS-RD-Server'],
-		}
-		```
+
+```
+windowsfeature { 'RDS-RD-Server':
+ 	ensure  => present,
+}
+reboot {'after_RDS_RD_Server':
+	when  => pending,
+	subscribe => Windowsfeature['RDS-RD-Server'],
+}
+```
