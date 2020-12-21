@@ -1,0 +1,54 @@
+Puppet r10k
+
+#Install r10k
+/opt/puppetlabs/puppet/bin/gem install r10k
+
+r10k help
+
+#Check
+which r10k
+
+#Configure r10k
+vim /etc/puppetlabs/r10k/r10k.yaml
+
+cd /etc/puppetlabs/code/environments
+
+ls
+
+rm -rf *
+
+ls
+
+
+#Copy content of repository in each of the directory from git repo as specified in the r10k configuration file
+r10k deploy environment
+
+ls
+
+#Puppet File
+#A way to specify a set of module which want to include in our environment
+
+#Git Checkout Production Repo and create a puppet file in it
+vim Puppetfile
+forge 'forge.puppetlabs.com'
+mod 'puppetlabs/ntp', '4.1.0'
+mod 'puppetlabs/stdlib', '4.1.0'
+
+r10k puppetfile check
+git add Puppetfile
+git commit -m "-"
+git push origin production
+r10 deploy environment -p production
+cd /etc/puppetlabs/code/environments/production
+tree modules
+
+
+
+
+
+
+
+
+
+
+
