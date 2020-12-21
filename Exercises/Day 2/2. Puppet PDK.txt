@@ -12,6 +12,8 @@ sudo yum upgrade pdk
 #Basic usage
 PDK can generate modules and classes, validate module metadata, style, and syntax, and run unit tests. 
 
+alias cdpp="cd /etc/puppetlabs/code/environments/production/manifests"
+cd
 #Generate a module
 pdk new module my_module
 cd my_module
@@ -26,15 +28,5 @@ pdk validate
 
 #Run unit tests
 pdk test unit
-
-#Build a module package with the pdk build command so that you can upload your module to the Forge.
-pdf build
-
-
-Create a Forge account
-In your web browser, navigate to the Puppet Forge and log in.
-Click Publish in the upper right hand corner of the screen.
-On the upload page, click Choose File and use the file browser to locate and select the release tarball. Then click Upload Release.
-After a successful upload, your browser will load the new release page for your module. 
 
 
