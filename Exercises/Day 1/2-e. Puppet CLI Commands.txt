@@ -94,7 +94,9 @@ alias ; cdpp; pwd
 
 puppet resource --type
 puppet describe service
-puppet resource service chronyd
+puppet resource service {
+
+d
 #service should show as running and enabled
 
 puppet resource service atd
@@ -273,7 +275,8 @@ cd ../modules
 ls
 
 #Create module
-mkdir -p chrony{manifests,files}
+mkdir -p chrony/manifests; mkdir -p chrony/files
+
 
 puppet resource package chrony > chrony/manifests/init.pp
 puppet resource service chronyd >> chrony/manifests/init.pp
