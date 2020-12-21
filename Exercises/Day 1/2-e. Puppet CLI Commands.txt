@@ -106,7 +106,7 @@ puppet resource service atd
  - Modules are great ways to encapsulate code in to reusable lumps. Puppet forge is a great resource for modules that have been shared. The stdlib from puppetlabs is always useful
 puppet module list
 puppet module install puppetlabs/stdlib
-puppet module uninstall puppetlabs/stdlib
+puppet module uninstall puppetlabs/stdlib --force
 #To install modules in a shared environment so that it can be used in any environment
 #Installing in a shared module directory makes it available across environments
 puppet module install -i /etc/puppetlabs/code/modules puppetlabs/stdlib
