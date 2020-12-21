@@ -59,23 +59,94 @@ puppet apply 1.perms.pp
 
 ### Manage Windows users and groups
  - To manage administrator accounts with Puppet, create a user resource with 'Administrator' as the resource title
-	
+	```
 	user { 'Administrator':
 	   ensure => present,
 	   password => 'yabbadabba'
-	}
+	}```
+	
  - puppet apply 6.create-user.pp
 
 ### Manage local groups
  - To add domain users or groups not present in the Domain Administrators group to the local Administrators group, use this code:
+	 ```
 	 group { 'Administrators':
 	   ensure  => 'present',
 	   members => ['DOMAIN\\User'],
 	   auth_membership => false
 	}
+	```
  - puppet apply 6.domain-user.pp
 
 ### Executing PowerShell code
  - puppet apply 5.powershell-disable-drive-indexing.pp
 
+### windows_env
+ - This module manages (system and user) Windows environment variables.
 
+#### Installation
+ - puppet module install puppet/windows_env
+ 
+ - Refer: 9.windows_env.pp
+  
+ - puppet apply 9.windows_env.pp
+
+#### Facts
+ - A structured fact which lists the following Windows environment variables
+   - ALLUSERSPROFILE
+   - APPDATA
+   - COMMONPROGRAMFILES
+   - COMMONPROGRAMFILES(X86)
+   - HOME
+   - HOMEDRIVE
+   - HOMEPATH
+   - LOCALAPPDATA
+   - PATHEXT
+   - PROCESSOR_IDENTIFIER
+   - PROCESSOR_LEVEL
+   - PROCESSOR_REVISION
+   - PROGRAMDATA
+   - PROGRAMFILES
+   - PROGRAMFILES(X86)
+   - PSMODULEPATH
+   - PUBLIC
+   - SYSTEMDRIVE
+   - SYSTEMROOT
+   - TEMP
+   - TMP
+   - USERPROFILE
+   - WINDIR
+
+  
+ - Example
+
+	- $app_data = $facts['windows_env']['APPDATA']
+	- # Output the AppData path in the puppet log
+	- notify { $app_data: }
+
+	- puppet apply 10.windows-facts.pp
+
+### windowsfeature
+ - Installs windows features (and optionally corresponding tools)
+
+ - To install several windows features as part of a large application such IIS:
+	- refer 11.windows-feature-several.pp
+	- puppet apply 11.windows-feature-several.pp
+ - To install any associated management tools:
+		```
+		windowsfeature { 'Web-WebServer':
+		  ensure                 => present,
+		  installmanagementtools => true,
+		}
+		```
+
+ - To install a feature and reboot if one is pending:
+		```
+		windowsfeature { 'RDS-RD-Server':
+		  ensure  => present,
+		}
+		reboot {'after_RDS_RD_Server':
+		  when  => pending,
+		  subscribe => Windowsfeature['RDS-RD-Server'],
+		}
+		```
