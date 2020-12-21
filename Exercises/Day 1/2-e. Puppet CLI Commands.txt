@@ -282,22 +282,25 @@ puppet resource package chrony > chrony/manifests/init.pp
 puppet resource service chronyd >> chrony/manifests/init.pp
 
 vim chrony/manifests/init.pp
-class
+class chrony
 {
-	package { 'chrony':
-	  ensure   => 'installed',
-	}
-	service { 'chronyd':
-	  ensure   => 'running',
-	  enable   => 'true',
-	  require  => Package['chrony'],
-	}
-	file_line { '/etc/chrony.conf':
-		ensure	=> 'file',
-		content	=> file('chrony/chrony.conf'),
-		notify	=> Service['chronyd'],
-	}
+        package
+        {
+          'chrony':
+           ensure   => 'installed',
+        }
+        service { 'chronyd':
+          ensure   => 'running',
+          enable   => 'true',
+          require  => Package['chrony'],
+        }
+        file { '/etc/chrony.conf':
+                ensure  => 'file',
+                content => file('chrony/chrony.conf'),
+                notify  => Service['chronyd'],
+        }
 }
+
 
 puppet module list
 
