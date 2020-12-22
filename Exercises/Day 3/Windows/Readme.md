@@ -122,7 +122,7 @@ puppet apply 1.perms.pp
  - Example
 
 	- $app_data = $facts['windows_env']['APPDATA']
-	- # Output the AppData path in the puppet log
+	- #Output the AppData path in the puppet log
 	- notify { $app_data: }
 
 	- puppet apply 10.windows-facts.pp
