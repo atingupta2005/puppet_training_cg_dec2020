@@ -4,8 +4,41 @@ curl -JLO 'https://pm.puppet.com/cgi-bin/download.cgi?dist=el&rel=8&arch=x86_64&
 tar -xf puppet-enterprise-2019.8.4-el-8-x86_64.tar.gz
 
 cd puppet-enterprise-2019.8.4-el-8-x86_64
-./puppet-enterprise-installer
+./puppet-enterpriseh-installer
 
+### Add entry in host files
+vim /etc/hosts
+```
+<public_ip> puppet.example.com puppet
+```
+
+ - ping puppet
+
+### Generate Self Signed CA Certificates (Optional for trouble shooting)
+ - puppetserver ca list -a
+
+### Verify is certificate is generated
+```
+cd /etc/puppetlabs/puppet/ssl
+cd ca
+ls
+```
+
+## Genearete certificates for this host (Optional for trouble shooting)
+```
+puppet certificate generate --dns-alt-names puppet,puppet.example.com,puppet.dev.example.com,puppet.prod.example.com puppet.example.com --ca-location local
+
+ls requests/
+puppet cert sign puppet.example.com --allow-dns-alt-names
+ls signed/
+ls requests/
+ls ../certs/
+puppet certificate find puppet.example.com --ca-location local
+ls ../certs/
+puppet certificate find ca --ca-location local
+ls ../certs/
+ls ../private_keys/
+```
 
 1. Puppet Enterprise Agents
 curl -JLO 'https://pm.puppet.com/puppet-agent/2019.8.4/6.19.1/repos/el/8/puppet6/x86_64/puppet-agent-6.19.1-1.el8.x86_64.rpm'
@@ -43,4 +76,3 @@ You can run a task to check the status of your primary server in the console.
 1. Results
 View the task status and output in the Jobs page when it is finished running.
 The status of your primary server should be “running” and “enabled”
-
