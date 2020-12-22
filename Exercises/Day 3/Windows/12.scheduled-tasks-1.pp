@@ -1,5 +1,3 @@
-# puppet module install puppetlabs-scheduled_task --version 2.3.1
-```
 scheduled_task { 'Disk Cleanup': # Unique name for the scheduled task
   command   => "$::system32\\WindowsPowerShell\\v1.0\\powershell.exe",
   arguments => '-File "C:\\Scripts\\Clear-DiskSpace.ps1"',
@@ -10,4 +8,3 @@ scheduled_task { 'Disk Cleanup': # Unique name for the scheduled task
     start_date => '2018-01-01'   # Defaults to the current date; not required.
   }],
 }
-```

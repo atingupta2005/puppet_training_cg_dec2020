@@ -1,6 +1,4 @@
 #To run every time the computer boots.
-
-```
 scheduled_task { 'Disk Cleanup On Restart':
   ensure        => 'present',
   compatibility => 2,
@@ -14,4 +12,3 @@ scheduled_task { 'Disk Cleanup On Restart':
   }],
   user          => 'system',
 }
-```

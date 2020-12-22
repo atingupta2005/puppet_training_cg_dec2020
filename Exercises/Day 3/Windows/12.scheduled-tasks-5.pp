@@ -1,5 +1,4 @@
-# To run at logon, use the logon trigger:
-```
+#To run at logon, use the logon trigger:
 scheduled_task { 'example_notepad':
   compatibility => 2,
   command       => 'C:\\Windows\\System32\\notepad.exe',
@@ -8,4 +7,3 @@ scheduled_task { 'example_notepad':
     user_id  => 'MyDomain\\SomeUser'
   }],
 }
-```

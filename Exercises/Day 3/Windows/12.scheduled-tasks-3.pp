@@ -1,7 +1,6 @@
 # - You can also set your scheduled tasks to repeat during a set time block
 # - Using the cleanup script again, this scheduled task begins at the same time every day and runs once an hour from seven in the morning to seven at night as the SYSTEM account.
 
-```
 scheduled_task { 'Disk Cleanup Daily Repeating':
   ensure    => 'present',
   command   => "$::system32\\WindowsPowerShell\\v1.0\\powershell.exe",
@@ -15,4 +14,3 @@ scheduled_task { 'Disk Cleanup Daily Repeating':
   }],
   user      => 'system',           # Specifies the account to run the task as
 }
-```
