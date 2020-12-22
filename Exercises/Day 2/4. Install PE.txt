@@ -1,3 +1,5 @@
+sudo su
+
 1. Download Puppet Enterprise binary for your platform
 curl -JLO 'https://pm.puppet.com/cgi-bin/download.cgi?dist=el&rel=8&arch=x86_64&ver=latest'
 
