@@ -9,7 +9,7 @@ cd puppet-enterprise-2019.8.4-el-8-x86_64
 ### Add entry in host files
 vim /etc/hosts
 ```
-<public_ip> puppet.example.com puppet
+<public_ip> puppet.example.com puppet <domain_name>
 ```
 
  - ping puppet
