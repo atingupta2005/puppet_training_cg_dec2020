@@ -1,3 +1,7 @@
+module { 'puppetlabs/scheduled_task':
+  ensure   => present,
+}
+
 scheduled_task { 'Disk Cleanup':
   command   => "$::system32\\WindowsPowerShell\\v1.0\\powershell.exe",
   arguments => '-File "C:\\Scripts\\Clear-DiskSpace.ps1"',
