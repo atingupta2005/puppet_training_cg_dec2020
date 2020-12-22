@@ -6,7 +6,7 @@ curl -JLO 'https://pm.puppet.com/cgi-bin/download.cgi?dist=el&rel=8&arch=x86_64&
 tar -xf puppet-enterprise-2019.8.4-el-8-x86_64.tar.gz
 
 cd puppet-enterprise-2019.8.4-el-8-x86_64
-./puppet-enterpriseh-installer
+./puppet-enterprise-installer
 
 ### Add entry in host files
 vim /etc/hosts
