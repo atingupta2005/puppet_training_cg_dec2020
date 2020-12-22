@@ -8,7 +8,34 @@
  - On each client machine add the host entry as per below:
   - sudo su
   - echo "<pe-server-ip-address> puppet <generated-domain-name>" >> /etc/hosts
-  
+
+## Also need to set a unique host name of client
+ - sudo hostnamectl set-hostname <yourname>
+
+
+## Troubleshooting (Optional):
+```
+Error: The certificate for '' does not match its private key
+Error: Could not run: The certificate for '' does not match its private key
+[atingupta2005@linuxhost ~]$
+Remote side unexpectedly closed network connection
+
+
+#On Server
+puppetserver ca list --all
+puppetserver ca clean --certname "atinhost.1gzlpbuzgjyufeexxcm3cgfhpd.lx.internal.cloudapp.net"
+
+puppetserver ca clean --certname "linuxhost.1gzlpbuzgjyufeexxcm3cgfhpd.lx.internal.cloudapp.net"
+
+puppetserver ca clean --certname  "linuxhost.gdjfi20tkhaepkfcm3oacg22kg.gx.internal.cloudapp.net"
+
+
+#On Client
+find / -name *linuxhost*internal.cloudapp.net.pem* -delete
+
+puppet agent -t
+```
+
 ## Add agent nodes
 1. In the console, on the Nodes page, click Add nodes.
 1. Click Install agents.
